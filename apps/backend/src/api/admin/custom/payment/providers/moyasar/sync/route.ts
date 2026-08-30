@@ -21,7 +21,7 @@ const MOYASAR_PROVIDER_ID = "pp_moyasar_default"
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
   try {
     const query = req.scope.resolve(ContainerRegistrationKeys.QUERY) as QueryService
-    const paymentModule = req.scope.resolve("payment") as PaymentModuleService
+    const paymentModule = req.scope.resolve("payment") as unknown as PaymentModuleService
 
     const { data: regions } = await query.graph({
       entity: "region",

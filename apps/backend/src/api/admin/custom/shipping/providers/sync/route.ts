@@ -36,12 +36,8 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
         if (existingIds.has(provider.id)) continue
 
         await link.create({
-          [Modules.STOCK_LOCATION]: {
-            stock_location_id: location.id,
-          },
-          [Modules.FULFILLMENT]: {
-            fulfillment_provider_id: provider.id,
-          },
+          [Modules.STOCK_LOCATION]: {stock_location_id: location.id},
+          [Modules.FULFILLMENT]: {fulfillment_provider_id: provider.id},
         })
 
         linked++

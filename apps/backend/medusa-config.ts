@@ -2,6 +2,9 @@ import { defineConfig } from '@medusajs/framework/utils';
 
 export default defineConfig({
   modules: {
+    translation: {
+      resolve: "@medusajs/translation",
+    },
     payment: {
       resolve: "@medusajs/payment",
       options: {

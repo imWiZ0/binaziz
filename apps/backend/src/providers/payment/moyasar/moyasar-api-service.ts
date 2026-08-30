@@ -14,28 +14,15 @@ export class MoyasarApiService {
 
   private getAuthorizationHeader(): string {
     if (!this.secretKey_) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "MOYASAR_SECRET_KEY is not configured"
-      )
+      throw new MedusaError(MedusaError.Types.INVALID_DATA, "MOYASAR_SECRET_KEY is not configured")
     }
 
     const token = Buffer.from(`${this.secretKey_}:`).toString("base64")
     return `Basic ${token}`
   }
 
-  private async request<T>(
-    path: string,
-    init: RequestInit = {}
-  ): Promise<T> {
-    const response = await fetch(`${this.baseUrl_}${path}`, {
-      ...init,
-      headers: {
-        Authorization: this.getAuthorizationHeader(),
-        "Content-Type": "application/json",
-        ...(init.headers || {}),
-      },
-    })
+  private async request<T>(path: string, init: RequestInit = {}): Promise<T> {
+    const response = await fetch(`${this.baseUrl_}${path}`, {...init, headers: {Authorization: this.getAuthorizationHeader(), "Content-Type": "application/json", ...(init.headers || {})}})
 
     if (!response.ok) {
       let errorMessage = `Moyasar API request failed with status ${response.status}`
@@ -45,14 +32,13 @@ export class MoyasarApiService {
           message?: string
           errors?: Record<string, string[]>
         }
+
         if (payload?.message) {
           errorMessage = payload.message
         }
 
         if (payload?.errors && typeof payload.errors === "object") {
-          const details = Object.entries(payload.errors)
-            .map(([field, messages]) => `${field}: ${(messages || []).join(", ")}`)
-            .join("; ")
+          const details = Object.entries(payload.errors).map(([field, messages]) => `${field}: ${(messages || []).join(", ")}`).join("; ")
 
           if (details) {
             errorMessage = `${errorMessage} (${details})`
@@ -81,10 +67,7 @@ export class MoyasarApiService {
     })
   }
 
-  async refundPayment(
-    paymentId: string,
-    input: CreateMoyasarRefundInput
-  ): Promise<MoyasarRefund> {
+  async refundPayment(paymentId: string, input: CreateMoyasarRefundInput): Promise<MoyasarRefund> {
     return await this.request<MoyasarRefund>(`/payments/${paymentId}/refunds`, {
       method: "POST",
       body: JSON.stringify(input),

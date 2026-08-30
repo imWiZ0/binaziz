@@ -67,3 +67,16 @@ export type MoyasarRefund = {
   status?: string
   created_at?: string
 }
+
+export type ProviderSessionData = Record<string, unknown> & {
+  id?: string
+  session_id?: string
+  payment_source_selection?: string
+  card_name?: string
+  card_number?: string
+  card_month?: string
+  card_year?: string
+  card_cvc?: string
+  stcpay_mobile?: string
+  applepay_token?: string
+}

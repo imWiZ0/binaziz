@@ -1,48 +1,28 @@
 import { AbstractFulfillmentProviderService } from "@medusajs/framework/utils"
-import type {
-  CreateFulfillmentResult,
-  FulfillmentOption,
-} from "@medusajs/types"
-import type { CreateShippingOptionDTO } from "@medusajs/types"
+import type { CreateFulfillmentResult, FulfillmentOption } from "@medusajs/types"
 import OtoService from "./oto-api-service"
 import { OTO_FULFILLMENT_OPTIONS, OtoCarrier } from "./types"
 
 class OtoFulfillmentProviderService extends AbstractFulfillmentProviderService {
   static identifier = "oto"
 
-  // -------------------------------------------------------
   // Shipping options presented in Medusa Admin
-  // -------------------------------------------------------
-
   async getFulfillmentOptions(): Promise<FulfillmentOption[]> {
     return OTO_FULFILLMENT_OPTIONS
   }
 
-  // -------------------------------------------------------
   // Validate that the option data has a supported carrier
-  // -------------------------------------------------------
-
   async validateOption(data: Record<string, unknown>): Promise<boolean> {
     const carrier = data.carrier as string
     return OTO_FULFILLMENT_OPTIONS.some((o) => o.carrier === carrier)
   }
 
-  // -------------------------------------------------------
   // Validate fulfillment data at checkout (pass-through)
-  // -------------------------------------------------------
-
-  async validateFulfillmentData(
-    optionData: Record<string, unknown>,
-    data: Record<string, unknown>,
-    _context: Record<string, unknown>
-  ) {
+  async validateFulfillmentData(optionData: Record<string, unknown>, data: Record<string, unknown>, _context: Record<string, unknown>) {
     return { ...optionData, ...data }
   }
 
-  // -------------------------------------------------------
   // Create fulfillment → call OTO createOrder with carrier
-  // -------------------------------------------------------
-
   async createFulfillment(data: Record<string, unknown>, items: any[], order: any, fulfillment: any): Promise<CreateFulfillmentResult> {
     try {
       const carrier = data.carrier as OtoCarrier
@@ -67,12 +47,7 @@ class OtoFulfillmentProviderService extends AbstractFulfillmentProviderService {
         carrier,
         order_reference: order?.id ?? fulfillment?.id,
         consignee: {
-          name: [
-            shippingAddress?.first_name,
-            shippingAddress?.last_name,
-          ]
-            .filter(Boolean)
-            .join(" "),
+          name: [shippingAddress?.first_name, shippingAddress?.last_name].filter(Boolean).join(" "),
           phone: shippingAddress?.phone ?? "",
           address: {
             line1:    shippingAddress?.address_1 ?? "",
@@ -124,10 +99,7 @@ class OtoFulfillmentProviderService extends AbstractFulfillmentProviderService {
     }
   }
 
-  // -------------------------------------------------------
   // Cancel fulfillment → call OTO cancelOrder
-  // -------------------------------------------------------
-
   async cancelFulfillment(fulfillment: any): Promise<any> {
     try {
       const otoOrderId = fulfillment?.data?.oto_order_id

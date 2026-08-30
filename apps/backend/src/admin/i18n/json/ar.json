@@ -1,0 +1,10 @@
+{
+  "location": {
+    "oto_sync_widget": {
+      "title": "أربط موقع الالتقاط مع OTO",
+      "description": "الموقع الذي سيستخدمه OTO لتنفيذ الطلبات لهذا الموقع.",
+      "current_location": "الموقع الحالي: {{name}}",
+      "sync_button": "مزامنة"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "location": {
+    "oto_sync_widget": {
+      "title": "Sync Pickup Location With OTO",
+      "description": "The Location That OTO will use to fulfill orders for this stock location.",
+      "current_location": "Current Location: {{name}}",
+      "sync_button": "Sync"
+    }
+  }
+}

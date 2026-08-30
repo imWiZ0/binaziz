@@ -10,17 +10,13 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
   try {
     const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-    // ------------------------------------------------------------------
     // 1. All fulfillment providers registered in the database
-    // ------------------------------------------------------------------
     const { data: fulfillmentProviders } = await query.graph({
       entity: "fulfillment_provider",
       fields: ["id"],
     })
 
-    // ------------------------------------------------------------------
     // 2. All shipping options with related data
-    // ------------------------------------------------------------------
     const { data: shippingOptions } = await query.graph({
       entity: "shipping_option",
       fields: [
@@ -43,9 +39,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       ],
     })
 
-    // ------------------------------------------------------------------
     // 3. Which providers are linked to at least one stock location
-    // ------------------------------------------------------------------
     const { data: stockLocations } = await query.graph({
       entity: "stock_location",
       fields: ["id", "fulfillment_providers.id"],
@@ -58,9 +52,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       }
     }
 
-    // ------------------------------------------------------------------
     // 4. Group shipping options by provider_id
-    // ------------------------------------------------------------------
     const optionsByProvider = new Map<string, any[]>()
     for (const opt of shippingOptions as any[]) {
       const pid: string = opt.provider_id ?? "unknown"
@@ -76,9 +68,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       })
     }
 
-    // ------------------------------------------------------------------
     // 5. Build response — every registered provider, with or without options
-    // ------------------------------------------------------------------
     const providers = (fulfillmentProviders as any[]).map((fp) => ({
       provider_id: fp.id,
       label:       PROVIDER_LABELS[fp.id] ?? fp.id,

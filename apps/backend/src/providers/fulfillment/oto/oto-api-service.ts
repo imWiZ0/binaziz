@@ -100,19 +100,11 @@ export default class OtoService {
     }
   }
 
-  // ----------------------------------------
-  // Health
-  // ----------------------------------------
-
   public async healthCheck() {
     const response = await this.request<{status: string}>("GET", "/rest/v2/healthCheck")
 
     return response.status
   }
-
-  // ----------------------------------------
-  // Pickup Locations
-  // ----------------------------------------
 
   public async getPickupLocation() {
     return this.request("GET", "/rest/v2/getPickupLocation")
@@ -122,10 +114,6 @@ export default class OtoService {
     return this.request("POST", "/rest/v2/changePickupLocation", payload)
   }
 
-  // ----------------------------------------
-  // Orders
-  // ----------------------------------------
-
   public async createOrder(payload: any) {
     return this.request("POST", "/rest/v2/createOrder", payload)
   }
@@ -134,10 +122,6 @@ export default class OtoService {
     return this.request("POST", "/rest/v2/cancelOrder", payload)
   }
 
-  // ----------------------------------------
-  // Shipments
-  // ----------------------------------------
-
   public async createShipment(payload: any) {
     return this.request("POST", "/rest/v2/createShipment", payload)
   }
@@ -145,10 +129,6 @@ export default class OtoService {
   public async getDeliveryFee(payload: any) {
     return this.request("POST", "/rest/v2/getDeliveryFee", payload)
   }
-
-  // ----------------------------------------
-  // Credits
-  // ----------------------------------------
 
   public async getUserCredits() {
     return this.request("GET", "/rest/v2/userCredits")
