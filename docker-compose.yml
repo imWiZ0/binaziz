@@ -1,0 +1,79 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: binaziz-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: medusa-binaziz
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Y29mZmVlY291cGxlaGl0dm95YWdlcG90YXRvZXNzaG93c2lsZW50bWFycmllZHNsaWc
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    networks:
+      - binaziz
+
+  redis:
+    image: redis:7-alpine
+    container_name: binaziz-redis
+    restart: unless-stopped
+
+    volumes:
+      - redis_data:/data
+
+    networks:
+      - binaziz
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+
+    container_name: binaziz-backend
+    restart: unless-stopped
+
+    env_file:
+      - ./apps/backend/.env
+
+    depends_on:
+      - postgres
+      - redis
+
+    ports:
+      - "9000:9000"
+
+    networks:
+      - binaziz
+
+  storefront:
+    build:
+      context: .
+      dockerfile: Dockerfile.storefront
+      args:
+        NEXT_PUBLIC_BASE_URL: http://94.72.107.28:8000
+        NEXT_PUBLIC_MEDUSA_BACKEND_URL: http://94.72.107.28:9000
+        NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY: pk_2fd89c321947a904d80c0b7fe8a4614fdb43d6af0dadc3e968ea9ae2fa04248a
+
+    container_name: binaziz-storefront
+    restart: unless-stopped
+
+    env_file:
+      - ./apps/storefront/.env.local
+
+    depends_on:
+      - backend
+
+    ports:
+      - "8000:8000"
+
+    networks:
+      - binaziz
+
+networks:
+  binaziz:
+
+volumes:
+  postgres_data:
+  redis_data:

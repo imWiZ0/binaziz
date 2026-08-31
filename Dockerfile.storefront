@@ -1,0 +1,29 @@
+FROM node:20-bookworm-slim
+
+WORKDIR /app
+
+RUN npm install -g npm@11.12.0
+
+COPY package.json package-lock.json ./
+COPY apps/backend/package.json apps/backend/package.json
+COPY apps/storefront/package.json apps/storefront/package.json
+
+RUN npm ci
+
+COPY apps/storefront apps/storefront
+
+WORKDIR /app/apps/storefront
+
+ARG NEXT_PUBLIC_BASE_URL
+ARG NEXT_PUBLIC_MEDUSA_BACKEND_URL
+ARG NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
+
+ENV NEXT_PUBLIC_BASE_URL=$NEXT_PUBLIC_BASE_URL
+ENV NEXT_PUBLIC_MEDUSA_BACKEND_URL=$NEXT_PUBLIC_MEDUSA_BACKEND_URL
+ENV NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=$NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
+
+RUN npm run build
+
+EXPOSE 8000
+
+CMD ["npm", "start"]

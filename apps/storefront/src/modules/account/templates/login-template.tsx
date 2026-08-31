@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { Suspense } from "react"
 
 import Register from "@modules/account/components/register"
 import Login from "@modules/account/components/login"
@@ -15,11 +16,13 @@ const LoginTemplate = () => {
 
   return (
     <div className="w-full flex flex-col items-center justify-center min-h-[calc(100vh-200px)] px-8 py-8">
-      {currentView === "sign-in" ? (
-        <Login setCurrentView={setCurrentView} />
-      ) : (
-        <Register setCurrentView={setCurrentView} />
-      )}
+      <Suspense>
+        {currentView === "sign-in" ? (
+          <Login setCurrentView={setCurrentView} />
+        ) : (
+          <Register setCurrentView={setCurrentView} />
+        )}
+      </Suspense>
     </div>
   )
 }

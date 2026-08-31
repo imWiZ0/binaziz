@@ -1,6 +1,6 @@
 import { Metadata } from "next"
 import { retrieveOrder } from "@lib/data/orders"
-import OrderConfirmedTemplate from "@modules/order/templates/order-confirmed-template"
+import OrderCompletedTemplate from "@modules/order/templates/order-completed-template"
 import { notFound } from "next/navigation"
 
 export const metadata: Metadata = {
@@ -14,5 +14,5 @@ export default async function OrderConfirmedPage({ params }: { params: { id: str
     notFound()
   }
 
-  return <OrderConfirmedTemplate order={order} />
+  return <OrderCompletedTemplate order={order} />
 }

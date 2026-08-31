@@ -6,9 +6,9 @@ import ProductPreview from "@modules/products/components/product-preview"
 import { Heading } from "@modules/common/components/ui"
 
 export const metadata: Metadata = {
-  title: "Medusa Next.js Starter Template",
+  title: "متجر بن عزيز",
   description:
-    "A performant frontend ecommerce starter template with Next.js 15 and Medusa.",
+    "متجر بن عزيز لجميع الحرف الفنية.",
 }
 
 export default async function Home() {
