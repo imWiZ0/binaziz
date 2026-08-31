@@ -1,158 +1,155 @@
 <p align="center">
-  <a href="https://www.medusajs.com">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/59018053/229103275-b5e482bb-4601-46e6-8142-244f531cebdb.svg">
-    <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
-    <img alt="Medusa logo" src="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
-    </picture>
+  <a href="https://binaziz.alsaiftech.online">
+    <h1 align="center">BinAziz Store</h1>
   </a>
 </p>
-<h1 align="center">
-  Medusa DTC Starter
-</h1>
 
-<h4 align="center">
-  <a href="https://docs.medusajs.com">Documentation</a> |
-  <a href="https://www.medusajs.com">Website</a>
-</h4>
+<h3 align="center">
+  A modern Saudi e-commerce platform powered by Medusa & Next.js
+</h3>
 
 <p align="center">
-  Building blocks for digital commerce
+  A full-featured online store for BinAziz, built with a modern,
+  scalable and API-first commerce architecture.
 </p>
+
 <p align="center">
-  <a href="https://github.com/medusajs/medusa/blob/develop/LICENSE">
-    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="Medusa is released under the MIT license." />
+  <a href="https://docs.medusajs.com">
+    <img src="https://img.shields.io/badge/Medusa-2.x-6366F1" alt="Medusa" />
   </a>
-  <a href="https://circleci.com/gh/medusajs/medusa">
-    <img src="https://circleci.com/gh/medusajs/medusa.svg?style=shield" alt="Current CircleCI build status." />
+  <a href="https://nextjs.org">
+    <img src="https://img.shields.io/badge/Next.js-16-black" alt="Next.js" />
   </a>
-  <a href="https://github.com/medusajs/medusa/blob/develop/CONTRIBUTING.md">
-    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat" alt="PRs welcome!" />
+  <a href="https://www.postgresql.org">
+    <img src="https://img.shields.io/badge/PostgreSQL-17-336791" alt="PostgreSQL" />
   </a>
-    <a href="https://www.producthunt.com/posts/medusa"><img src="https://img.shields.io/badge/Product%20Hunt-%231%20Product%20of%20the%20Day-%23DA552E" alt="Product Hunt"></a>
-  <a href="https://discord.gg/xpCwq3Kfn8">
-    <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
-  </a>
-  <a href="https://twitter.com/intent/follow?screen_name=medusajs">
-    <img src="https://img.shields.io/twitter/follow/medusajs.svg?label=Follow%20@medusajs" alt="Follow @medusajs" />
+  <a href="https://www.docker.com">
+    <img src="https://img.shields.io/badge/Docker-Containerized-2496ED" alt="Docker" />
   </a>
 </p>
 
-# Medusa DTC Starter
+---
 
-A production-ready monorepo starter for direct-to-consumer ecommerce stores powered by Medusa and Next.js. Includes a fully featured storefront with product browsing, cart, checkout, customer accounts, and order management.
+# BinAziz Store
 
-## Features
+**BinAziz Store** is a modern e-commerce platform developed for **BinAziz**, designed to provide customers with a complete online shopping experience.
 
-- All of [Medusa's commerce features](https://docs.medusajs.com/resources/commerce-modules)
-- Multi-region support with automatic country detection
-- Product catalog with variant selection
-- Cart with promotion codes
-- Multi-step checkout with shipping and payment
-- Customer accounts with order history and address management
-- Order transfer between accounts
+The platform allows customers to browse products, select product variants, add items to their cart, complete checkout, choose shipping methods, and make payments online.
 
-## Getting Started
+The system is built using an **API-first architecture**, with Medusa powering the commerce backend and Next.js providing the customer-facing storefront.
 
-### Deploy with Medusa Cloud
+The project is designed with the Saudi Arabian market in mind, including support for:
 
-The fastest way to get started is deploying with [Medusa Cloud](https://cloud.medusajs.com):
+- Saudi Riyal (SAR)
+- Saudi Arabia as the primary market
+- Local shipping providers
+- Online payment providers
+- Customer accounts
+- Arabic and English experiences
+- Product and inventory management
+- Order management
 
-1. [Create a Medusa Cloud account](https://cloud.medusajs.com)
-2. Deploy this starter directly from your dashboard
+## ✨ Features
 
-### Local Installation
+### 🛍️ Storefront
 
-> **Prerequisites:
->
-> - [Node.js](https://nodejs.org/) v20+
-> - [PostgreSQL](https://www.postgresql.org/) v15+
-> - [pnpm](https://pnpm.io/) v10+
+- Modern responsive storefront
+- Product catalog
+- Product variants
+- Product images
+- Product search and browsing
+- Shopping cart
+- Promotion codes
+- Multi-step checkout
+- Customer accounts
+- Customer addresses
+- Order history
+- Order management
 
-1. Clone the repository and install dependencies:
+### 💳 Payments
 
-```bash
-git clone https://github.com/medusajs/dtc-starter.git
-cd dtc-starter
-pnpm install
-```
+The platform is designed to support online payments through payment providers suitable for the Saudi market.
 
-2. Set up environment variables for the backend:
+Current payment integration:
 
-```bash
-cp apps/backend/.env.template apps/backend/.env
-```
+- Moyasar
+- Saudi Riyal (SAR)
 
-3. Set the database URL in `apps/backend.env`:
+### 🚚 Shipping
 
-```bash
-# Replace with actual database URL, make sure the database exists.
-DATABASE_URL=postgres://postgres:@localhost:5432/medusa-dtc-starter
-```
+The store uses a custom fulfillment integration to connect Medusa with shipping providers.
 
-4. Run migrations:
+Supported shipping services include:
 
-```bash
-cd apps/backend
-pnpm medusa db:migrate
-```
+- OTO
+- SMSA
+- Aramex
+- RedBox
 
-5. Add admin user:
+The shipping system is designed so additional shipping providers can be integrated without changing the core storefront.
 
-```bash
-cd apps/backend
-pnpm medusa user -e admin@test.com -p supersecret
-```
+### 👤 Customer Accounts
 
-6. Start Medusa backend:
+Customers can:
 
-```bash
-cd apps/backend
-pnpm dev
-```
+- Create an account
+- Sign in
+- Manage their profile
+- Manage addresses
+- View previous orders
+- Track their purchases
 
-7. Open the admin dashboard at `localhost:9000/app` and log in. Retrieve your publishable API key at Settings > Publishable API key.
+### ⚙️ Admin Dashboard
 
-8. Set up environment variables for the storefront:
+The store uses the **Medusa Admin Dashboard** for managing the commerce platform.
 
-```bash
-cp apps/storefront/.env.template apps/storefront/.env.local
-```
+Administrators can manage:
 
-9. Update `apps/storefront/.env.local` with your Medusa publishable API key:
+- Products
+- Product variants
+- Inventory
+- Orders
+- Customers
+- Regions
+- Shipping options
+- Payment providers
+- Promotions
+- Product categories
+- Sales channels
 
-```bash
-NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_6c3...
-```
+Admin dashboard:
 
-10.  Start storefront:
+`https://binaziz.alsaiftech.online/app`
 
-```bash
-cd apps/storefront
-pnpm dev
-```
+---
 
-The storefront runs on `http://localhost:8000`.
+# 🏗️ Architecture
 
-You can slo run the following command from the root to start both backend and storefront:
+The project follows a separated frontend/backend architecture:
 
-```bash
-pnpm dev
-```
-
-## Configuration
-
-The storefront is configured via environment variables in `apps/storefront/.env.local`:
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` | Publishable API key from your Medusa backend | — |
-| `NEXT_PUBLIC_MEDUSA_BACKEND_URL` | URL of your Medusa backend | `http://localhost:9000` |
-| `NEXT_PUBLIC_DEFAULT_REGION` | Default region country code | `dk` |
-| `NEXT_PUBLIC_BASE_URL` | Base URL of the storefront | `https://localhost:8000` |
-| `NEXT_PUBLIC_STRIPE_KEY` | Stripe publishable key (optional) | — |
-
-## Resources
-
-- [Medusa Documentation](https://docs.medusajs.com)
-- [Medusa Cloud](https://cloud.medusajs.com)
+```text
+                    ┌──────────────────────┐
+                    │       Customer       │
+                    └──────────┬───────────┘
+                               │
+                               ▼
+                    ┌──────────────────────┐
+                    │      Nginx / SSL     │
+                    │    Reverse Proxy      │
+                    └──────────┬───────────┘
+                               │
+              ┌────────────────┴────────────────┐
+              │                                 │
+              ▼                                 ▼
+    ┌───────────────────┐             ┌───────────────────┐
+    │   Next.js Store   │             │  Medusa Backend   │
+    │      :8000        │             │      :9000        │
+    └───────────────────┘             └─────────┬─────────┘
+                                                │
+                              ┌─────────────────┼─────────────────┐
+                              │                 │                 │
+                              ▼                 ▼                 ▼
+                       ┌────────────┐    ┌────────────┐    ┌────────────┐
+                       │ PostgreSQL │    │   Redis    │    │ External   │
+                       │     DB     │    │   Cache    │    │ Services   │
+                       └────────────┘    └────────────┘    └────────────┘
