@@ -2,25 +2,38 @@
 
 import { Fragment } from "react"
 
-import { Popover, PopoverPanel, Transition } from "@headlessui/react"
+import { Popover, PopoverButton, PopoverPanel, Transition } from "@headlessui/react"
 import { XMark } from "@medusajs/icons"
+import { useTranslation } from "@lib/context/translation-context"
+import { TranslationKey } from "@lib/i18n"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { Text } from "@modules/common/components/ui"
+import { Menu } from "lucide-react"
 
-const SideMenuItems = {
-  Home: "/",
-  Store: "/store",
-  Account: "/account",
-  Cart: "/cart",
-}
+const SideMenuItems: { labelKey: TranslationKey; href: string; testId: string }[] = [
+  { labelKey: "nav.home", href: "/", testId: "home-link" },
+  { labelKey: "nav.store", href: "/store", testId: "store-link" },
+  { labelKey: "nav.account", href: "/account", testId: "account-link" },
+  { labelKey: "nav.cart", href: "/cart", testId: "cart-link" },
+]
 
 const SideMenu = () => {
+  const { t } = useTranslation()
+
   return (
     <div className="h-full">
       <div className="flex items-center h-full">
         <Popover className="flex h-full">
           {({ open, close }) => (
             <>
+              <PopoverButton
+                className="flex items-center h-full hover:text-ui-fg-base transition-colors"
+                aria-label={t("nav.openMenu")}
+                title={t("nav.openMenu")}
+                data-testid="nav-menu-button"
+              >
+                <Menu size={20} strokeWidth={1.5} />
+              </PopoverButton>
               {open && (
                 <div
                   className="pointer-events-auto fixed inset-0 z-[50] bg-black/0"
@@ -45,27 +58,31 @@ const SideMenu = () => {
                     className="flex h-full flex-col justify-between rounded-rounded bg-[rgba(3,7,18,0.5)] p-6"
                   >
                     <div className="flex justify-end" id="xmark">
-                      <button data-testid="close-menu-button" onClick={close}>
+                      <button
+                        data-testid="close-menu-button"
+                        onClick={close}
+                        aria-label={t("nav.closeMenu")}
+                      >
                         <XMark />
                       </button>
                     </div>
                     <ul className="flex flex-col items-start justify-start gap-6">
-                      {Object.entries(SideMenuItems).map(([name, href]) => (
-                        <li key={name}>
+                      {SideMenuItems.map(({ labelKey, href, testId }) => (
+                        <li key={labelKey}>
                           <LocalizedClientLink
                             href={href}
                             className="text-3xl leading-10 hover:text-ui-fg-disabled"
                             onClick={close}
-                            data-testid={`${name.toLowerCase()}-link`}
+                            data-testid={testId}
                           >
-                            {name}
+                            {t(labelKey)}
                           </LocalizedClientLink>
                         </li>
                       ))}
                     </ul>
                     <Text className="flex justify-between txt-compact-small">
-                      © {new Date().getFullYear()} Medusa Store. All rights
-                      reserved.
+                      © {new Date().getFullYear()} Medusa Store.{" "}
+                      {t("nav.rights")}
                     </Text>
                   </div>
                 </PopoverPanel>

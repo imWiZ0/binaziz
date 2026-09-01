@@ -3,8 +3,7 @@ import { retrieveCustomer } from "@lib/data/customer"
 import { retrieveOrder } from "@lib/data/orders"
 import { redirect } from "next/navigation"
 import AccountLayout from "@modules/account/templates/account-layout"
-import OrderCard from "@modules/account/components/order-card"
-import { Heading } from "@modules/common/components/ui"
+import OrderDetailsTemplate from "@modules/order/templates/order-details-template"
 
 export const metadata: Metadata = {
   title: "Order Details",
@@ -25,11 +24,8 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
 
   return (
     <AccountLayout customer={customer}>
-      <div className="py-12" data-testid="order-details-container">
-        <Heading level="h1" className="mb-8">
-          Order #{order.display_id}
-        </Heading>
-        <OrderCard order={order} />
+      <div className="py-12" data-testid="order-details-page">
+        <OrderDetailsTemplate order={order} />
       </div>
     </AccountLayout>
   )

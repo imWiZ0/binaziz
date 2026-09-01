@@ -106,6 +106,11 @@ class MoyasarPaymentProviderService extends AbstractPaymentProvider<MoyasarProvi
       amount_sar: payment.amount / SAR_HALALAS_PER_RIYAL,
       payment_source_selection: sourceSelection || prev.payment_source_selection || "visa_mastercard",
       payment_source_company: payment.source?.company || null,
+      // Moyasar returns the 3-D Secure / hosted page URL as source.transaction_url.
+      // The storefront expects it as payment_url to redirect the shopper.
+      payment_url: payment.source?.transaction_url || prev.payment_url || null,
+      callback_url: payment.callback_url || this.options_.callbackUrl || prev.callback_url || null,
+      moyasar_publishable_key: this.options_.publishableKey || prev.moyasar_publishable_key || null,
       metadata: payment.metadata || {},
       raw_payment: payment,
     }

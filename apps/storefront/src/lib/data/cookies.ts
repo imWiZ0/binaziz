@@ -111,7 +111,6 @@ export const removePendingCustomer = async () => {
 
 export const getCartId = async () => {
   const cookies = await nextCookies()
-  console.log("[TEST] Cookies :", cookies)
   return cookies.get("_medusa_cart_id")?.value
 }
 

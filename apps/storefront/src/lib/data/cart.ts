@@ -415,7 +415,6 @@ export async function completeCart(cartId?: string) {
  */
 export async function placeOrder(cartId?: string) {
   const id = cartId || (await getCartId())
-  console.log("[TEST] Placing order for cart ID:", id)
   if (!id) {
     throw new Error("No existing cart found when placing an order")
   }
@@ -424,39 +423,20 @@ export async function placeOrder(cartId?: string) {
     ...(await getAuthHeaders()),
   }
 
-  console.log("[DEBUG] Placing order for cart:", id)
-  console.log("[DEBUG] Headers:", JSON.stringify(headers))
-
   const cartRes = await sdk.store.cart
     .complete(id, {}, headers)
-    .then(async (cartRes) => {
-      console.log("[DEBUG] Cart complete SUCCESS:", JSON.stringify(cartRes, null, 2))
-      return cartRes
-    })
+    .then(async (cartRes) => cartRes)
     .catch((error) => {
-      console.error("[DEBUG] Cart complete FAILED:", error)
       throw error
     })
 
-  console.log("[DEBUG] Response type:", cartRes?.type)
-  console.log("[DEBUG] Has order:", cartRes?.type === "order")
-  console.log(
-    "[DEBUG] Order ID:",
-    cartRes?.type === "order"
-      ? (cartRes as { type: "order"; order: HttpTypes.StoreOrder }).order.id
-      : "N/A"
-  )
-
   if (cartRes?.type === "order") {
     const orderId = (cartRes as { type: "order"; order: HttpTypes.StoreOrder }).order.id
-
-    console.log("[DEBUG] Redirecting to confirmation for order:", orderId)
 
     await removeCartId()
     redirect(`/checkout?order_id=${orderId}`)
   }
 
-  console.log("[DEBUG] Returning cart (not order)")
   return (cartRes as { type: "cart"; cart: HttpTypes.StoreCart }).cart
 }
 

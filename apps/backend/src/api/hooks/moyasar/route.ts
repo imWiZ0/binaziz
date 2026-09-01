@@ -84,8 +84,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
   try {
     console.log("[MOYASAR] Webhook received")
 
-    // Temporarily disable signature verification for testing purposes
-    // verifySignature(req, process.env.MOYASAR_WEBHOOK_SECRET)
+    verifySignature(req, process.env.MOYASAR_WEBHOOK_SECRET)
 
     const paymentModuleService = req.scope.resolve( Modules.PAYMENT ) as PaymentModuleService
 
@@ -200,5 +199,6 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
   }
 
   // Redirect browser to the storefront checkout page
-  return res.redirect(302, `http://localhost:8000/checkout?${queryParams.toString()}`)
+  const storefrontUrl = process.env.STOREFRONT_URL || "https://binaziz.alsaiftech.online"
+  return res.redirect(302, `${storefrontUrl}/checkout?${queryParams.toString()}`)
 }

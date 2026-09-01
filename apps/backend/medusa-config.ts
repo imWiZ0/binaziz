@@ -1,10 +1,27 @@
-import { defineConfig } from '@medusajs/framework/utils';
+import { defineConfig, Modules } from '@medusajs/framework/utils';
 
 export default defineConfig({
   modules: {
     translation: {
       resolve: "@medusajs/translation",
     },
+    // NOTE: Redis-backed cache/event-bus/workflow modules caused a deterministic
+    // startup deadlock (server hung after "Connection to Redis established" and
+    // never bound port 9000). Reverted to Medusa's default in-memory modules to
+    // restore a healthy server. Re-add these one at a time once the deadlock is
+    // diagnosed. Storefront caching is handled at the Next.js layer (force-cache).
+    // [Modules.CACHE]: {
+    //   resolve: "@medusajs/cache-redis",
+    //   options: { redisUrl: process.env.REDIS_URL },
+    // },
+    // [Modules.EVENT_BUS]: {
+    //   resolve: "@medusajs/event-bus-redis",
+    //   options: { redisUrl: process.env.REDIS_URL },
+    // },
+    // [Modules.WORKFLOW_ENGINE]: {
+    //   resolve: "@medusajs/workflow-engine-redis",
+    //   options: { redis: { redisUrl: process.env.REDIS_URL } },
+    // },
     payment: {
       resolve: "@medusajs/payment",
       options: {

@@ -846,20 +846,59 @@ export default async function initial_data_seed({
 
   logger.info("Seeding inventory levels.");
 
+  // Only stock inventory for variants that actually track inventory.
+  //
+  // Why: this store fulfills orders manually (we create shipments on the
+  // carrier's website and record tracking in Medusa), so products are created
+  // with manage_inventory = false. Medusa still auto-creates an inventory_item
+  // link per variant, and previously we seeded an inventory_level for every one
+  // of them. That combination (manage_inventory = false + inventory link) makes
+  // Medusa's createOrderShipmentWorkflow crash with
+  // "Cannot read properties of undefined (reading 'required_quantity')" when
+  // marking an order as shipped, because the fulfillment item's
+  // inventory_item_id stays NULL while the variant still has an inventory link.
+  //
+  // To avoid that, only create inventory levels for inventory items whose
+  // variant has manage_inventory = true. Non-managed variants keep no inventory
+  // link/level, so the shipment workflow skips the crashing code path.
+  const { data: managedVariants } = await query.graph({
+    entity: "product_variant",
+    fields: ["id", "inventory_items.inventory_item_id"],
+    filters: { manage_inventory: true } as Record<string, unknown>,
+  });
+
+  const managedInventoryItemIds = new Set<string>(
+    (managedVariants as any[]).flatMap((variant) =>
+      (variant.inventory_items ?? [])
+        .map((link: any) => link?.inventory_item_id)
+        .filter(Boolean)
+    )
+  );
+
   const { data: inventoryItems } = await query.graph({
     entity: "inventory_item",
     fields: ["id"],
   });
 
-  await createInventoryLevelsWorkflow(container).run({
-    input: {
-      inventory_levels: inventoryItems.map((item) => ({
-        location_id: stockLocation.id,
-        stocked_quantity: 1000000,
-        inventory_item_id: item.id,
-      })),
-    },
-  });
+  const inventoryLevels = (inventoryItems as any[])
+    .filter((item) => managedInventoryItemIds.has(item.id))
+    .map((item) => ({
+      location_id: stockLocation.id,
+      stocked_quantity: 1000000,
+      inventory_item_id: item.id,
+    }));
+
+  if (inventoryLevels.length) {
+    await createInventoryLevelsWorkflow(container).run({
+      input: {
+        inventory_levels: inventoryLevels,
+      },
+    });
+  } else {
+    logger.info(
+      "No inventory-managed variants found; skipping inventory level seeding."
+    );
+  }
 
   logger.info("Finished seeding inventory levels data.");
 }

@@ -42,7 +42,7 @@ services:
       - redis
 
     ports:
-      - "127.0.0.1:9000:9000"
+      - "9000:9000"
 
     networks:
       - binaziz
@@ -62,15 +62,11 @@ services:
     env_file:
       - ./apps/storefront/.env.local
 
-    environment:
-      # Server-side SDK calls go over the internal Docker network.
-      - MEDUSA_BACKEND_URL_INTERNAL=http://backend:9000
-
     depends_on:
       - backend
 
     ports:
-      - "127.0.0.1:8000:8000"
+      - "8000:8000"
 
     networks:
       - binaziz
